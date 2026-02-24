@@ -1,0 +1,3065 @@
+{
+  "name": "SMOSYN   AUTOLEAD",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2bb358c6-070b-4661-aa7b-f1d7a4aceb78",
+              "name": "Sender_ Name",
+              "value": "YOUR_FULL_NAME",
+              "type": "string"
+            },
+            {
+              "id": "f17ac8d8-e335-4962-8f98-92a49f1c8115",
+              "name": "Sender_Role",
+              "value": "AI Automation Consultant",
+              "type": "string"
+            },
+            {
+              "id": "a0be6462-3a74-4f6f-9872-c6bb72187ddd",
+              "name": "Sender_Company",
+              "value": "SMOSYN Digital",
+              "type": "string"
+            },
+            {
+              "id": "fc348332-9c8f-4e31-8d6c-b616a9766c80",
+              "name": "Sender_Email",
+              "value": "YOUR_SENDER_EMAIL",
+              "type": "string"
+            },
+            {
+              "id": "d112e909-8254-45eb-8233-bb03a86d1bd1",
+              "name": "Company Knowledge",
+              "value": "YOUR_COMPANY_KNOWLEDGE_BASE",
+              "type": "string"
+            },
+            {
+              "id": "903840eb-12cf-45c2-b213-dcfa04835958",
+              "name": "Phone",
+              "value": "YOUR_PHONE_NUMBER",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3152,
+        528
+      ],
+      "id": "262323e0-3afe-4b58-b4c4-d300960f4596",
+      "name": "Config. Sender's Info"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4",
+          "mode": "list",
+          "cachedResultName": "GPT-4"
+        },
+        "responses": {
+          "values": [
+            {
+              "role": "system",
+              "content": "YOUR_SYSTEM_PROMPT"
+            },
+            {
+              "content": "YOUR_USER_PROMPT"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {
+          "textFormat": {
+            "textOptions": {
+              "type": "json_object"
+            }
+          },
+          "temperature": 0.7
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        -2176,
+        512
+      ],
+      "id": "8354091d-348e-448c-8c9e-92d936d43920",
+      "name": "AI-Write Intro Email",
+      "credentials": {
+        "openAiApi": {
+          "id": "SEciRXbMvrUIt9sK",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toRecipients": "={{ $('GET QUALIFIED LEADS').item.json.Email }}",
+        "subject": "={{ $json.output[0].content[0].text.subject }}",
+        "bodyContent": "={{ $json.output[0].content[0].text.body }}",
+        "additionalFields": {
+          "bodyContentType": "html"
+        }
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        -1856,
+        512
+      ],
+      "id": "26afa628-2ee4-43ec-9ae2-2e5c185d04d3",
+      "name": "Send a message",
+      "webhookId": "3fe7a3ef-54d5-48c4-bda9-a902999e805f",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "gXHYudKn7S3jftQV",
+          "name": "SMOSYN Microsoft Outlook account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4",
+          "mode": "list",
+          "cachedResultName": "GPT-4"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "YOUR_USER_PROMPT"
+            },
+            {
+              "role": "system",
+              "content": "YOUR_SYSTEM_PROMPT"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {
+          "textFormat": {
+            "textOptions": {
+              "type": "json_object"
+            }
+          },
+          "temperature": 0.7
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        -3056,
+        832
+      ],
+      "id": "894070aa-3b17-43ad-acf9-83d4adab469e",
+      "name": "Follow up Email",
+      "credentials": {
+        "openAiApi": {
+          "id": "SEciRXbMvrUIt9sK",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toRecipients": "={{ $('GET QUALIFIED LEADS').item.json.Email }}",
+        "subject": "={{ $json.output[0].content[0].text.subject }}",
+        "bodyContent": "={{ $json.output[0].content[0].text.body }}",
+        "additionalFields": {
+          "bodyContentType": "html"
+        }
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        -2752,
+        832
+      ],
+      "id": "a9cfac58-99d5-4817-b470-944f0c8fde34",
+      "name": "Send Follow Up",
+      "webhookId": "00de3ebf-0018-4cc8-b5a6-c351049fb489",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "gXHYudKn7S3jftQV",
+          "name": "SMOSYN Microsoft Outlook account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "eb539c81-6bb1-4bb4-a495-03003c9edce8",
+              "leftValue": "={{ $json['Ready to Contact'] }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "fbc5d9b6-d6d4-456d-adb5-eae123141118",
+              "leftValue": "={{ $json['Last sent date'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "f7e2081a-d8a2-437a-8b8f-fc741d370c0a",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2736,
+        528
+      ],
+      "id": "83a26eab-1f28-4a7a-87f6-51ccfa83017f",
+      "name": "CONTACTED?"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Contacted": "True",
+            "row_number": "={{ $('GET QUALIFIED LEADS').item.json.row_number }}",
+            "Last sent date": "={{ $now }}",
+            "Current Stage": "Contacted",
+            "Email Contact Stage": "Reached Out",
+            "Email Count": "1",
+            "Email Subject": "={{ $('AI-Write Intro Email').item.json.output[0].content[0].text.subject }}",
+            "Email Body": "={{ $('AI-Write Intro Email').item.json.output[0].content[0].text.body }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Business Name",
+              "displayName": "Business Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Business type",
+              "displayName": "Business type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last name",
+              "displayName": "Last name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Position",
+              "displayName": "Position",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Website Scrapped",
+              "displayName": "Website Scrapped",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Score",
+              "displayName": "AI Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Action",
+              "displayName": "AI Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ready to Contact",
+              "displayName": "Ready to Contact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Contacted",
+              "displayName": "Contacted",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Current Stage",
+              "displayName": "Current Stage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email Count",
+              "displayName": "Email Count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email Contact Stage",
+              "displayName": "Email Contact Stage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Follow-Up Sent",
+              "displayName": "Follow-Up Sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Replied",
+              "displayName": "Replied",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Replied Date",
+              "displayName": "Replied Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Replied Type",
+              "displayName": "Replied Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Website Summary",
+              "displayName": "Website Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Service Fit",
+              "displayName": "Service Fit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Expertise",
+              "displayName": "Expertise",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Lead Source",
+              "displayName": "Lead Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Reasoning",
+              "displayName": "AI Reasoning",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Analysized date",
+              "displayName": "AI Analysized date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last sent date",
+              "displayName": "Last sent date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email Subject",
+              "displayName": "Email Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email Body",
+              "displayName": "Email Body",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Follow-Up Subject",
+              "displayName": "Follow-Up Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow-Up Email Body",
+              "displayName": "Follow-Up Email Body",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Final-Followup Subject ",
+              "displayName": "Final-Followup Subject ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Final Follow-Up Email Body",
+              "displayName": "Final Follow-Up Email Body",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Deal Value",
+              "displayName": "Deal Value",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Next Action",
+              "displayName": "Next Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1680,
+        512
+      ],
+      "id": "ae99e378-7592-4214-958c-a681dfe8bf37",
+      "name": "UPDATE LEAD ROWS",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "56G4saQ9gcqD6lOp",
+          "name": "SMOSYN Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "57ad697a-c1a9-4b2b-b709-d61f5610a1dc",
+              "leftValue": "={{ $('GET QUALIFIED LEADS').item.json.Replied }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "3f36c533-1588-4fca-b815-9258de80a3bc",
+              "leftValue": "={{ $('GET QUALIFIED LEADS').item.json['Final Follow-Up Email Body'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1888,
+        832
+      ],
+      "id": "d54c7240-72bf-44d1-a8fa-48eafa478a34",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4",
+          "mode": "list",
+          "cachedResultName": "GPT-4"
+        },
+        "responses": {
+          "values": [
+            {
+              "role": "system",
+              "content": "YOUR_SYSTEM_PROMPT"
+            },
+            {
+              "content": "YOUR_USER_PROMPT"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {
+          "textFormat": {
+            "textOptions": {
+              "type": "json_object"
+            }
+          },
+          "temperature": 0.7
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        -1616,
+        816
+      ],
+      "id": "5fdbd5b0-6f6a-48ad-a622-18fc5181f504",
+      "name": "Last follow up",
+      "credentials": {
+        "openAiApi": {
+          "id": "SEciRXbMvrUIt9sK",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -2736,
+        400
+      ],
+      "id": "cd22b30f-c3a7-462e-8fb5-c57205f3690f",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const item = $input.item.json;\nconst companyDomain = item['Company Domain'];\n\n// Check if this company domain was contacted recently\nconst lastContactDate = item['Last Contact Date'];\n\n// If company domain already has a contact in progress, skip\nif (lastContactDate && lastContactDate !== '') {\n  const daysSince = (new Date() - new Date(lastContactDate)) / (1000 * 60 * 60 * 24);\n  \n  // Skip if contacted within last 14 days (gives time for sequence to complete)\n  if (daysSince < 14) {\n    console.log(`\u23ed\ufe0f Skipping ${item['Business Name']} - company contacted ${Math.round(daysSince)} days ago`);\n    return null; // Skip this lead\n  }\n}\n\n// Company clear to contact\nreturn { json: item };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2528,
+        512
+      ],
+      "id": "2291641c-6783-4633-bd0b-78730154828f",
+      "name": "Check Company Not Contacted"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const item = $input.item.json;\n\nconst context = {\n  firstName: item['First Name'] || '',\n  lastName: item['Last name'] || '',\n  businessName: item['Business Name'] || '',\n  businessType: item['Business type'] || '',\n  position: item.Position || '',\n  email: item.Email || '',\n  website: item.Website || '',\n  address: item.Address || '',\n  \n  qualificationStatus: item['Status'] || '',\n  aiScore: item['AI Score'] || 0,\n  aiReasoning: item['AI Reasoning'] || '',\n  aiUrgency: item['AI Urgency'] || '',\n  painPoints: item['Pain Points Identified'] || '',\n  servicesTheyOffer: item['Expertise'] || '',\n  bestServiceFit: item['Service Fit'] || '',\n  websiteSummary: item['Website Summary'] || '',\n  \n  firstEmailSubject: item['Email Subject'] || '',\n  firstEmailBody: item['Email Body'] || '',\n  followUp1Subject: item['Follow-Up Subject'] || '',\n  followUp1Body: item['Follow-Up Email Body'] || '',\n  followUp2Body: item['Final Follow-Up Email Body'] || '',\n  \n  emailCount: parseInt(item['Email Count']) || 0,\n  contactedDate: item['Contacted Date'] || null,\n  firstEmailSent: item['Email Sent'] || null,\n  followUp1Sent: item['Follow-Up Sent'] || null,\n  followUp2Sent: item['Final Follow-Up Sent'] || null,\n  replied: item.Replied || false\n};\n\nreturn {\n  json: {\n    ...item,\n    context: context\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2336,
+        512
+      ],
+      "id": "ea0873f8-f552-4f20-94f5-96ebbe4b445d",
+      "name": "Build Email Context"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const item = $input.item.json;\n\nconst context = {\n  firstName: item['First Name'] || '',\n  lastName: item['Last name'] || '',\n  businessName: item['Business Name'] || '',\n  businessType: item['Business type'] || '',\n  position: item.Position || '',\n  email: item.Email || '',\n  website: item.Website || '',\n  address: item.Address || '',\n  \n  qualificationStatus: item['Status'] || '',\n  aiScore: item['AI Score'] || 0,\n  aiReasoning: item['AI Reasoning'] || '',\n  aiUrgency: item['AI Urgency'] || '',\n  painPoints: item['Pain Points Identified'] || '',\n  servicesTheyOffer: item['Expertise'] || '',\n  bestServiceFit: item['Service Fit'] || '',\n  websiteSummary: item['Website Summary'] || '',\n  \n  firstEmailSubject: item['Email Subject'] || '',\n  firstEmailBody: item['Email Body'] || '',\n  followUp1Subject: item['Follow-Up Subject'] || '',\n  followUp1Body: item['Follow-Up Email Body'] || '',\n  followUp2Body: item['Final Follow-Up Email Body'] || '',\n  \n  emailCount: parseInt(item['Email Count']) || 0,\n  contactedDate: item['Contacted Date'] || null,\n  firstEmailSent: item['Email Sent'] || null,\n  followUp1Sent: item['Follow-Up Sent'] || null,\n  followUp2Sent: item['Final Follow-Up Sent'] || null,\n  replied: item.Replied || false\n};\n\nreturn {\n  json: {\n    ...item,\n    context: context\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1280,
+        512
+      ],
+      "id": "8fa2cc29-4691-4a36-a16e-79dfdfbc95a1",
+      "name": "Build Email Context1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "dc5e6f43-aeb8-4e58-86e9-087cad5489c8",
+              "leftValue": "={{ $('GET QUALIFIED LEADS').item.json.Replied }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "97d0a296-181f-4362-95eb-03812f15cb80",
+              "leftValue": "={{ $('GET QUALIFIED LEADS').item.json['Follow-Up Sent'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3312,
+        848
+      ],
+      "id": "e01162a7-d291-4555-a5ae-327d2f6f99c6",
+      "name": "Send Follow-up"
+    },
+    {
+      "parameters": {
+        "amount": 3,
+        "unit": "days"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1472,
+        512
+      ],
+      "id": "f6bf6a01-04da-4462-a43b-acbbc3bd519d",
+      "name": "Await Response(3 Days)",
+      "webhookId": "f37484be-5e35-42e2-9d98-ea5e1418db73"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -3312,
+        704
+      ],
+      "id": "3332f35a-a3a1-4b9e-80b7-094d946b507a",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "amount": 7,
+        "unit": "days"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -2272,
+        832
+      ],
+      "id": "798d4d05-9075-4965-b4b7-9d5891c4126b",
+      "name": "Await Response 7 Days",
+      "webhookId": "e24a80f2-fc30-4f54-a54a-bd7776815322"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Agency Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Email",
+              "lookupValue": "={{ $('GET QUALIFIED LEADS').item.json.Email }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -2048,
+        832
+      ],
+      "id": "7d88f7dc-e0b7-4835-8b7b-b4477c327668",
+      "name": "Get Previous Email Sent",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "56G4saQ9gcqD6lOp",
+          "name": "SMOSYN Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Agency Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('GET QUALIFIED LEADS').item.json.row_number }}\n",
+            "Last sent date": "={{$now}}",
+            "Email Count": "2",
+            "Email Contact Stage": "Followed Up",
+            "Follow-Up Sent": "True",
+            "Follow-Up Subject": "={{ $('Follow up Email').item.json.output[0].content[0].text.subject }}",
+            "Follow-Up Email Body": "={{ $('Follow up Email').item.json.output[0].content[0].text.body }}",
+            "Current Stage": "Follow-up"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Business Name",
+              "displayName": "Business Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Business type",
+              "displayName": "Business type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last name",
+              "displayName": "Last name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Position",
+              "displayName": "Position",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Website Scrapped",
+              "displayName": "Website Scrapped",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Score",
+              "displayName": "AI Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Action",
+              "displayName": "AI Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ready to Contact",
+              "displayName": "Ready to Contact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Contacted",
+              "displayName": "Contacted",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Current Stage",
+              "displayName": "Current Stage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email Count",
+              "displayName": "Email Count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email Contact Stage",
+              "displayName": "Email Contact Stage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Follow-Up Sent",
+              "displayName": "Follow-Up Sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Replied",
+              "displayName": "Replied",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Replied Date",
+              "displayName": "Replied Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Replied Type",
+              "displayName": "Replied Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Website Summary",
+              "displayName": "Website Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Service Fit",
+              "displayName": "Service Fit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Expertise",
+              "displayName": "Expertise",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Lead Source",
+              "displayName": "Lead Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Reasoning",
+              "displayName": "AI Reasoning",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Analysized date",
+              "displayName": "AI Analysized date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last sent date",
+              "displayName": "Last sent date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email Subject",
+              "displayName": "Email Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email Body",
+              "displayName": "Email Body",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow-Up Subject",
+              "displayName": "Follow-Up Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Follow-Up Email Body",
+              "displayName": "Follow-Up Email Body",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Final-Followup Subject ",
+              "displayName": "Final-Followup Subject ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Final Follow-Up Email Body",
+              "displayName": "Final Follow-Up Email Body",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Deal Value",
+              "displayName": "Deal Value",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Next Action",
+              "displayName": "Next Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -2496,
+        832
+      ],
+      "id": "0af6b6d9-085b-4a25-bafc-f58fdfc39e1d",
+      "name": "Update Follow Up lead",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "56G4saQ9gcqD6lOp",
+          "name": "SMOSYN Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Agency Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('GET QUALIFIED LEADS').item.json.row_number }}",
+            "Email Count": "3",
+            "Last sent date": "={{ $now}}",
+            "Final-Followup Subject ": "={{ $('Last follow up').item.json.output[0].content[0].text.subject }}",
+            "Final Follow-Up Email Body": "={{ $('Last follow up').item.json.output[0].content[0].text.body }}",
+            "Email Contact Stage": "Closed"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Business Name",
+              "displayName": "Business Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Business type",
+              "displayName": "Business type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last name",
+              "displayName": "Last name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Position",
+              "displayName": "Position",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Website Scrapped",
+              "displayName": "Website Scrapped",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Score",
+              "displayName": "AI Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Action",
+              "displayName": "AI Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ready to Contact",
+              "displayName": "Ready to Contact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Contacted",
+              "displayName": "Contacted",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Current Stage",
+              "displayName": "Current Stage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email Count",
+              "displayName": "Email Count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email Contact Stage",
+              "displayName": "Email Contact Stage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Follow-Up Sent",
+              "displayName": "Follow-Up Sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Replied",
+              "displayName": "Replied",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Replied Date",
+              "displayName": "Replied Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Replied Type",
+              "displayName": "Replied Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Website Summary",
+              "displayName": "Website Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Service Fit",
+              "displayName": "Service Fit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Expertise",
+              "displayName": "Expertise",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Lead Source",
+              "displayName": "Lead Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Reasoning",
+              "displayName": "AI Reasoning",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Analysized date",
+              "displayName": "AI Analysized date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last sent date",
+              "displayName": "Last sent date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email Subject",
+              "displayName": "Email Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email Body",
+              "displayName": "Email Body",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow-Up Subject",
+              "displayName": "Follow-Up Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow-Up Email Body",
+              "displayName": "Follow-Up Email Body",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Final-Followup Subject ",
+              "displayName": "Final-Followup Subject ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Final Follow-Up Email Body",
+              "displayName": "Final Follow-Up Email Body",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Deal Value",
+              "displayName": "Deal Value",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Next Action",
+              "displayName": "Next Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1104,
+        816
+      ],
+      "id": "1e5d81f2-a982-4f8e-9c70-4cd3be5239ad",
+      "name": "Update Final-Email",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "56G4saQ9gcqD6lOp",
+          "name": "SMOSYN Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toRecipients": "={{ $('Get Previous Email Sent').item.json.Email }}",
+        "subject": "={{ $json.output[0].content[0].text.subject }}",
+        "bodyContent": "={{ $json.output[0].content[0].text.body }}",
+        "additionalFields": {
+          "bodyContentType": "html"
+        }
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        -1296,
+        816
+      ],
+      "id": "872db9e6-6430-4452-9e8a-cd8f3270ff3e",
+      "name": "Send Last Email",
+      "webhookId": "f143ba36-ba2a-4603-b52b-33ed1c936ac4",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "gXHYudKn7S3jftQV",
+          "name": "SMOSYN Microsoft Outlook account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 * * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -3088,
+        208
+      ],
+      "id": "e5ced92d-f018-4776-9546-47e7555ed0e0",
+      "name": "Hourly Reply Check1"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 50,
+        "filtersUI": {
+          "values": {
+            "filters": {
+              "foldersToInclude": [
+                "YOUR_OUTLOOK_FOLDER_ID"
+              ]
+            }
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        -2912,
+        208
+      ],
+      "id": "02560c10-e2d9-4262-b30d-89b89b247848",
+      "name": "Check Inbox",
+      "webhookId": "5990bde8-c0c5-417a-9662-28c342fca42b",
+      "executeOnce": false,
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "gXHYudKn7S3jftQV",
+          "name": "SMOSYN Microsoft Outlook account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "7880505d-ed00-4bf6-bec6-a5286fdcefa8",
+              "leftValue": "={{ $json.subject }}",
+              "rightValue": "Re:",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "cbc58fb0-12ae-41d8-aacb-736cf99de48d",
+              "leftValue": "={{ $json.subject }}",
+              "rightValue": "Fw:",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "7d849fe6-c6c3-4f6f-b11d-7ff72e132dd4",
+              "leftValue": "inReplyTo",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "98837275-ee05-4444-94bd-2a4d385478a8",
+              "leftValue": "={{ $json.from }}",
+              "rightValue": "info@smmosyn.co.uk",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -2736,
+        208
+      ],
+      "id": "a76b3409-d9b2-4207-94e6-d12536637f7b",
+      "name": "Identify Replies"
+    },
+    {
+      "parameters": {
+        "chatId": "YOUR_TELEGRAM_CHAT_ID",
+        "text": "=\ud83d\udce9 New Lead Reply Received\n\nFrom: {{ $('Check Inbox').item.json.from }}\nSubject: {{ $('Check Inbox').item.json.subject }}\n\nMessage Preview:{{ $('Identify Replies').item.json.bodyPreview }}\n\n\nReply Type:{{ $json['Replied Type'] }}\n\n\nReceived At: {{ $json['Replied Date'] }}\n\n",
+        "additionalFields": {
+          "appendAttribution": false,
+          "disable_web_page_preview": true,
+          "parse_mode": "Markdown"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -1568,
+        224
+      ],
+      "id": "4e9163fd-343a-4939-b1de-c13a8219bd5d",
+      "name": "Send User Notification ",
+      "webhookId": "02c4b5d3-c21b-4dea-aeb5-829fc3752485",
+      "credentials": {
+        "telegramApi": {
+          "id": "Z08vJORLVCykMtXE",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "SMOSYN AGENCY MS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Leads Source",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Look Up Leads').item.json.row_number }}",
+            "Replied": "=True",
+            "Replied Type": "Human",
+            "Replied Date": "={{ $now.format('yyyy-MM-dd') }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Business Name",
+              "displayName": "Business Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Business type",
+              "displayName": "Business type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last name",
+              "displayName": "Last name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Position",
+              "displayName": "Position",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Website Scrapped",
+              "displayName": "Website Scrapped",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Score",
+              "displayName": "AI Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Action",
+              "displayName": "AI Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ready to Contact",
+              "displayName": "Ready to Contact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Contacted",
+              "displayName": "Contacted",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Current Stage",
+              "displayName": "Current Stage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email Count",
+              "displayName": "Email Count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email Contact Stage",
+              "displayName": "Email Contact Stage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow-Up Sent",
+              "displayName": "Follow-Up Sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Replied",
+              "displayName": "Replied",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Replied Date",
+              "displayName": "Replied Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Replied Type",
+              "displayName": "Replied Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Website Summary",
+              "displayName": "Website Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Service Fit",
+              "displayName": "Service Fit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Expertise",
+              "displayName": "Expertise",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Lead Source",
+              "displayName": "Lead Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Reasoning",
+              "displayName": "AI Reasoning",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "AI Analysized date",
+              "displayName": "AI Analysized date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last sent date",
+              "displayName": "Last sent date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email Subject",
+              "displayName": "Email Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email Body",
+              "displayName": "Email Body",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow-Up Subject",
+              "displayName": "Follow-Up Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Follow-Up Email Body",
+              "displayName": "Follow-Up Email Body",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Final-Followup Subject ",
+              "displayName": "Final-Followup Subject ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Final Follow-Up Email Body",
+              "displayName": "Final Follow-Up Email Body",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Deal Value",
+              "displayName": "Deal Value",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Next Action",
+              "displayName": "Next Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1760,
+        224
+      ],
+      "id": "e47206cb-d3d9-4aeb-81b2-b59825e7300d",
+      "name": "Update Reply Column",
+      "executeOnce": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "56G4saQ9gcqD6lOp",
+          "name": "SMOSYN Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "SMOSYN AGENCY MS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Leads Source",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -2336,
+        80
+      ],
+      "id": "cba287eb-15dc-4ae3-aeaa-f4827b8847b8",
+      "name": "Look Up Leads",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "56G4saQ9gcqD6lOp",
+          "name": "SMOSYN Google Sheets account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "7620ba58-7e25-4d53-86b8-c5a7538fe439",
+              "leftValue": "={{ $json.Replied }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1968,
+        208
+      ],
+      "id": "708bf7d3-e3dd-47d2-a652-68861542c7a0",
+      "name": "Check If Already Replied"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "8cdc8670-a520-4710-a6a6-7eb9a5b1be46",
+              "leftValue": "={{ $json.bodyPreview }}",
+              "rightValue": "Out of office",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            },
+            {
+              "id": "892111ad-b670-4286-88ba-0051006470e0",
+              "leftValue": "={{ $json.bodyPreview }}",
+              "rightValue": "automatic reply",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            },
+            {
+              "id": "b73d2c0a-1c13-4113-963c-4f6ef05f592b",
+              "leftValue": "={{ $json.bodyPreview }}",
+              "rightValue": "away from the office",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            },
+            {
+              "id": "1361ba44-960f-4676-abf6-305575778e7e",
+              "leftValue": "={{ $json.bodyPreview }}",
+              "rightValue": "delivery failure",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            },
+            {
+              "id": "87836bbb-c879-4998-80e3-2d039efe9bbe",
+              "leftValue": "={{ $json.bodyPreview }}",
+              "rightValue": "undeliverable",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            },
+            {
+              "id": "e1d84b9f-3271-4704-b988-46a721603752",
+              "leftValue": "={{ $json.subject }}",
+              "rightValue": "Out of office",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            },
+            {
+              "id": "3aafbfee-8c2f-484e-adae-612c8d62550e",
+              "leftValue": "={{ $json.subject }}",
+              "rightValue": "automatic reply",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            },
+            {
+              "id": "6ed32f92-e1fe-48f3-98dc-4f7626d01ff6",
+              "leftValue": "={{ $json.subject }}",
+              "rightValue": "away from the office",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            },
+            {
+              "id": "be3cae66-1720-441c-98b6-76c064bbf010",
+              "leftValue": "={{ $json.subject }}",
+              "rightValue": "delivery failure",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            },
+            {
+              "id": "6f91895a-2b31-4bcc-b4e9-3673796bd7c2",
+              "leftValue": "={{ $json.subject }}",
+              "rightValue": "undeliverable",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -2512,
+        192
+      ],
+      "id": "6f9c077d-4f38-4a6c-9a4d-0be2867c16ba",
+      "name": "Filter Auto Replies"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Agency Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Leads Source",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
+        },
+        "combineFilters": "OR",
+        "options": {
+          "returnFirstMatch": true
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -2944,
+        528
+      ],
+      "id": "ddca9663-ab7a-4710-9cfb-c8099129c977",
+      "name": "GET QUALIFIED LEADS",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "56G4saQ9gcqD6lOp",
+          "name": "SMOSYN Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * 1-5"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -3360,
+        528
+      ],
+      "id": "e2cf06e9-f33b-4f63-bcb1-c64f930d7298",
+      "name": "Start Autolead Outreach"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "advanced": true,
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "from",
+              "field2": "Email"
+            }
+          ]
+        },
+        "options": {},
+        "joinMode": "keepMatches",
+        "outputDataFrom": "both"
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -2128,
+        192
+      ],
+      "id": "70ec06a7-e6e0-4f07-9f9b-28d0446e1ad5",
+      "name": "Merge"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Config. Sender's Info": {
+      "main": [
+        [
+          {
+            "node": "GET QUALIFIED LEADS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI-Write Intro Email": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "UPDATE LEAD ROWS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Follow up Email": {
+      "main": [
+        [
+          {
+            "node": "Send Follow Up",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Follow Up": {
+      "main": [
+        [
+          {
+            "node": "Update Follow Up lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CONTACTED?": {
+      "main": [
+        [
+          {
+            "node": "Check Company Not Contacted",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UPDATE LEAD ROWS": {
+      "main": [
+        [
+          {
+            "node": "Await Response(3 Days)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Last follow up",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Last follow up": {
+      "main": [
+        [
+          {
+            "node": "Send Last Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Company Not Contacted": {
+      "main": [
+        [
+          {
+            "node": "Build Email Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Email Context": {
+      "main": [
+        [
+          {
+            "node": "AI-Write Intro Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Email Context1": {
+      "main": [
+        [
+          {
+            "node": "Send Follow-up",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Follow-up": {
+      "main": [
+        [
+          {
+            "node": "Follow up Email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Await Response(3 Days)": {
+      "main": [
+        [
+          {
+            "node": "Build Email Context1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Await Response 7 Days": {
+      "main": [
+        [
+          {
+            "node": "Get Previous Email Sent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Previous Email Sent": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Follow Up lead": {
+      "main": [
+        [
+          {
+            "node": "Await Response 7 Days",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Last Email": {
+      "main": [
+        [
+          {
+            "node": "Update Final-Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hourly Reply Check1": {
+      "main": [
+        [
+          {
+            "node": "Check Inbox",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Look Up Leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Inbox": {
+      "main": [
+        [
+          {
+            "node": "Identify Replies",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Identify Replies": {
+      "main": [
+        [
+          {
+            "node": "Filter Auto Replies",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Reply Column": {
+      "main": [
+        [
+          {
+            "node": "Send User Notification ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Look Up Leads": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Filter Auto Replies": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check If Already Replied": {
+      "main": [
+        [
+          {
+            "node": "Update Reply Column",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET QUALIFIED LEADS": {
+      "main": [
+        [
+          {
+            "node": "CONTACTED?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start Autolead Outreach": {
+      "main": [
+        [
+          {
+            "node": "Config. Sender's Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Check If Already Replied",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "fBu2DLLXNV20IWGe",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "99080da5-ff51-4172-820b-ebecb2b861fb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "YOUR_TELEGRAM_CREDENTIAL_HASH8cea"
+  },
+  "id": "FRXAMx9vrjA1kmJJ",
+  "tags": []
+}
